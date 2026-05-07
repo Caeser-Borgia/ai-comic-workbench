@@ -64,7 +64,7 @@
       "ipadapter": ["6", 0],
       "clip_vision": ["7", 0],
       "image": ["8", 0],
-      "weight": 0.75,
+      "weight": 0.55,
       "weight_type": "linear",
       "combine_embeds": "concat",
       "start_at": 0.0,
@@ -92,7 +92,7 @@
       "conditioning": ["2", 0],
       "control_net": ["11", 0],
       "image": ["10", 0],
-      "strength": 0.85
+      "strength": 0.35
     }
   },
   "13": {
@@ -101,7 +101,7 @@
       "conditioning": ["3", 0],
       "control_net": ["11", 0],
       "image": ["10", 0],
-      "strength": 0.85
+      "strength": 0.35
     }
   },
   "14": {
