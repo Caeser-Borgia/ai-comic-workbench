@@ -28,6 +28,15 @@ OUTPUT_DIR = ROOT / "output"
 COMFYUI_URL = "http://127.0.0.1:8188"
 PORT = 8080
 
+# Load .env file
+_env_file = ROOT / ".env"
+if _env_file.exists():
+    for _line in _env_file.read_text("utf-8").strip().split("\n"):
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _key, _val = _line.split("=", 1)
+            os.environ.setdefault(_key.strip(), _val.strip())
+
 STYLES = {
     "anime": ("日系", ", anime style, vibrant colors, cel shading, clean lineart",
               "low quality, worst quality, deformed, 3d, realistic"),
