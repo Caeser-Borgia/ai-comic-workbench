@@ -3,24 +3,24 @@ import subprocess
 import os
 from pathlib import Path
 
-FONT_PATH = "C:/Windows/Fonts/msyh.ttc"
+FONT_PATH = "msyh.ttc"
 
 
 def frame_to_segment(image_path, audio_path, subtitle, duration, output_path,
                      font_size=28, font_color="white"):
     """Create a video segment from one frame image + audio + subtitle."""
-    # Escape special characters for FFmpeg drawtext filter
-    safe = subtitle.replace(":", "\\:").replace("'", "\\'") if subtitle else ""
-
     cmd = [
         "ffmpeg", "-y",
         "-loop", "1", "-i", str(image_path),
         "-i", str(audio_path),
     ]
-    if safe:
+    if subtitle:
+        sub_file = Path(output_path).with_suffix(".sub.txt")
+        sub_file.write_text(subtitle, encoding="utf-8")
         drawtext = (
-            f"drawtext=text='{safe}':fontfile={FONT_PATH}:fontsize={font_size}:"
-            f"fontcolor={font_color}:bordercolor=black:borderw=2:"
+            f"drawtext=textfile='{sub_file.as_posix()}':fontfile={FONT_PATH}:"
+            f"fontsize={font_size}:fontcolor={font_color}:"
+            f"bordercolor=black:borderw=2:"
             f"x=(w-text_w)/2:y=h-60-(text_h)"
         )
         cmd += ["-vf", drawtext]
