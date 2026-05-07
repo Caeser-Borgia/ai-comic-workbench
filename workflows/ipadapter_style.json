@@ -1,0 +1,92 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "anything-v5.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "1girl, white hair, blue school uniform, school scene, flat coloring, simple lineart, clean black outline, anime style"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "complex shading, realistic, 3d, gradient, heavy shadows, low quality, worst quality, deformed, blurry"
+    }
+  },
+  "4": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 576,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "5": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "Screenshot_20260506172004.png"
+    }
+  },
+  "6": {
+    "class_type": "IPAdapterModelLoader",
+    "inputs": {
+      "ipadapter_file": "ip-adapter_sd15.safetensors"
+    }
+  },
+  "7": {
+    "class_type": "CLIPVisionLoader",
+    "inputs": {
+      "clip_name": "ip-adapter_sd15_clip_vision.safetensors"
+    }
+  },
+  "8": {
+    "class_type": "IPAdapterAdvanced",
+    "inputs": {
+      "model": ["1", 0],
+      "ipadapter": ["6", 0],
+      "image": ["5", 0],
+      "weight": 0.7,
+      "weight_type": "style transfer",
+      "combine_embeds": "concat",
+      "start_at": 0.0,
+      "end_at": 1.0,
+      "embeds_scaling": "V only",
+      "clip_vision": ["7", 0]
+    }
+  },
+  "9": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["8", 0],
+      "positive": ["2", 0],
+      "negative": ["3", 0],
+      "latent_image": ["4", 0],
+      "seed": 0,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    }
+  },
+  "10": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["9", 0],
+      "vae": ["1", 2]
+    }
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": ["10", 0],
+      "filename_prefix": "ipadapter_test"
+    }
+  }
+}

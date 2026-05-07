@@ -1,0 +1,17 @@
+# Generated output
+output/
+
+# Python
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
