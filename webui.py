@@ -214,19 +214,10 @@ def _build_char_wf(wf, prompt, negative, char_ref, prefix):
 
 
 def upload_image(file_data, filename):
-    """Upload image to ComfyUI input directory."""
-    boundary = "----ComfyUIBoundary"
-    body = (
-        f"--{boundary}\r\n"
-        f"Content-Disposition: form-data; name=\"image\"; filename=\"{filename}\"\r\n"
-        f"Content-Type: image/png\r\n\r\n"
-    ).encode() + file_data + f"\r\n--{boundary}--\r\n".encode()
-    req = urllib.request.Request(f"{COMFYUI_URL}/api/upload/image", data=body)
-    req.add_header("Content-Type", f"multipart/form-data; boundary={boundary}")
-    resp = json.loads(urllib.request.urlopen(req).read())
-    if "error" in resp:
-        raise RuntimeError(resp["error"])
-    return resp.get("name", filename)
+    """Save image to ComfyUI input directory (bypass API for reliability)."""
+    dest = Path("C:/Users/ASUS/ComfyUI/input") / filename
+    dest.write_bytes(file_data)
+    return filename
 
 
 # ── HTML ──────────────────────────────────────────────────────────
